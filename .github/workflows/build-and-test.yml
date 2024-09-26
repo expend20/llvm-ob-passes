@@ -28,5 +28,8 @@ jobs:
     - name: Build
       run: cmake --build build
 
+    - name: Debug
+      run: opt --version && ls build
+
     - name: Run Tests
       run: cmake --build build -t run_test
