@@ -29,7 +29,7 @@ jobs:
       run: cmake --build build
 
     - name: Debug
-      run: opt --version && ls build
+      run: opt --version && ls build && pwd
 
     - name: Run Tests
       run: cmake --build build -t run_test
