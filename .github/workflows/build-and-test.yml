@@ -22,6 +22,9 @@ jobs:
       with:
         version: "17"
 
+    - name: Configure CMake
+      run: cmake -S . -B build
+
     - name: Build
       run: cmake --build build
 
