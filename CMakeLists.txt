@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.13.4)
+
 project(LLVMExamplePass)
 
 # Set C++17 standard
@@ -15,4 +16,7 @@ include_directories(include)
 
 add_library(LLVMExamplePass MODULE
   lib/ExamplePass.cpp
+  lib/BogusControlFlowPass.cpp
+  lib/PassRegistration.cpp
 )
+

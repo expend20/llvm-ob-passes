@@ -1,2 +1,5 @@
+.cache
+.vscode
 build
 dummy-test/*.ll
+dummy-test/*.out

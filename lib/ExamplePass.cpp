@@ -1,7 +1,6 @@
 #include "ExamplePass.h"
 #include "llvm/IR/Function.h"
 #include "llvm/Passes/PassBuilder.h"
-#include "llvm/Passes/PassPlugin.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Support/CommandLine.h"
 
@@ -31,28 +30,4 @@ PreservedAnalyses ExamplePass::run(Function &F, FunctionAnalysisManager &AM) {
   }
 
   return PreservedAnalyses::all();
-}
-
-// Pass registration
-static void registerExamplePass(PassBuilder &PB) {
-  PB.registerPipelineParsingCallback(
-    [](StringRef Name, FunctionPassManager &FPM,
-       ArrayRef<PassBuilder::PipelineElement>) {
-      if (Name == "example-pass") {
-        FPM.addPass(ExamplePass());
-        return true;
-      }
-      return false;
-    });
-}
-
-// This is the core interface for pass plugins. It guarantees that 'opt' will
-// be able to recognize ExamplePass when added to the pass pipeline on the
-// command line, i.e. via '-passes=example-pass'
-extern "C" LLVM_ATTRIBUTE_WEAK ::llvm::PassPluginLibraryInfo
-llvmGetPassPluginInfo() {
-  return {
-    LLVM_PLUGIN_API_VERSION, "ExamplePass", LLVM_VERSION_STRING,
-    [](PassBuilder &PB) { registerExamplePass(PB); }
-  };
 }
