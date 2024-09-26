@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.13.4)
+cmake_minimum_required(VERSION 3.14)  # Increased minimum version for FetchContent
 
 project(LLVMExamplePass)
 
@@ -18,5 +18,32 @@ add_library(LLVMExamplePass MODULE
   lib/ExamplePass.cpp
   lib/BogusControlFlowPass.cpp
   lib/PassRegistration.cpp
+)
+
+# Fetch GTest
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG release-1.12.1
+)
+FetchContent_MakeAvailable(googletest)
+
+# Enable testing
+enable_testing()
+
+# Add test executable
+add_executable(tests tests/tests.cpp)
+target_link_libraries(tests GTest::gtest_main)
+
+# Add test to CTest
+add_test(NAME tests COMMAND tests)
+
+# Custom command to run the test
+add_custom_target(run_test
+  COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests
+  DEPENDS tests
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+  COMMENT "Running tests"
 )
 
