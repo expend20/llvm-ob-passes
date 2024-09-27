@@ -72,8 +72,8 @@ int main(int argc, char **argv) {
     {
         std::cout << "Current working directory: " << getcwd(nullptr, 0) << std::endl;
         // exec "touch ./libLLVMExamplePass.so"
-        const auto result = exec("touch ./libLLVMExamplePass.so");
-        std::cout << "Touch result: " << result << std::endl;
+        const auto result = exec("file ./libLLVMExamplePass.so");
+        std::cout << "File result: " << result << std::endl;
     }
 
     std::cout << "Current working directory: " << getcwd(nullptr, 0) << std::endl;
