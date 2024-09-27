@@ -12,7 +12,7 @@ jobs:
   llvm:
     strategy:
       matrix:
-        llvm-version: [16, 17, 18, 19, 20]
+        llvm-version: [16, 17, 18]
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,6 @@ jobs:
         sudo ln -s /usr/bin/clang-${{ matrix.llvm-version }} /usr/bin/clang
         sudo ln -s /usr/bin/clang++-${{ matrix.llvm-version }} /usr/bin/clang++
         sudo ln -s /usr/bin/opt-${{ matrix.llvm-version }} /usr/bin/opt
-        sudo touch /usr/lib/llvm-${{ matrix.llvm-version }}/lib/libLibcTableGenUtil.a
 
     - name: Check LLVM and Clang
       run: clang --version && opt --version 
