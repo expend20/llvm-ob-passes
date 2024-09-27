@@ -24,24 +24,15 @@ jobs:
       run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 18
 
     - name: Checking LLVM and Clang
-      run: clang --version && opt-18 --version && which clang-18 && which opt-18
+      run: clang --version && opt --version && which clang-17 && which opt-17
 
     - name: Make a link
-      run: sudo ln -s /usr/bin/opt-18 /usr/bin/opt
-
-    - name: Which opt
-      run: which opt
+      run: sudo ln -s /usr/bin/opt-17 /usr/bin/opt
 
     - name: Configure CMake
-      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-18/cmake
+      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-17/cmake
 
     - name: Build
       run: cmake --build build -t run_test
-
-    - name: Upload Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: test-results
-        path: build
 
 
