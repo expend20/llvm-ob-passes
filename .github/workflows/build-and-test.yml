@@ -9,7 +9,10 @@ on:
       - '**' 
 
 jobs:
-  llvm-17:
+  llvm:
+    strategy:
+      matrix:
+        llvm-version: [17, 18, 19]
     runs-on: ubuntu-latest
 
     steps:
@@ -18,21 +21,21 @@ jobs:
         submodules: recursive
 
     - name: Install LLVM and Clang
-      run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 17
+      run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh ${{ matrix.llvm-version }}
 
     - name: Replace default clang
       run: |
         sudo mv /usr/bin/clang /usr/bin/clang-old
         sudo mv /usr/bin/clang++ /usr/bin/clang++-old
-        sudo ln -s /usr/bin/clang-17 /usr/bin/clang
-        sudo ln -s /usr/bin/clang++-17 /usr/bin/clang++
-        sudo ln -s /usr/bin/opt-17 /usr/bin/opt
+        sudo ln -s /usr/bin/clang-${{ matrix.llvm-version }} /usr/bin/clang
+        sudo ln -s /usr/bin/clang++-${{ matrix.llvm-version }} /usr/bin/clang++
+        sudo ln -s /usr/bin/opt-${{ matrix.llvm-version }} /usr/bin/opt
 
     - name: Check LLVM and Clang
       run: clang --version && opt --version 
 
     - name: Configure CMake with Clang
-      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-17/cmake
+      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-${{ matrix.llvm-version }}/cmake
 
     - name: Build
       run: cmake --build build -t run_test
