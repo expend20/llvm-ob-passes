@@ -35,7 +35,7 @@ jobs:
       run: clang --version && opt --version 
 
     - name: Configure CMake with Clang
-      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-${{ matrix.llvm-version }}/cmake
+      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-${{ matrix.llvm-version }}/cmake -DCMAKE_C_COMPILER=clang-${{ matrix.llvm-version }} -DCMAKE_CXX_COMPILER=clang++-${{ matrix.llvm-version }}
 
     - name: Build
       run: cmake --build build -t run_test
