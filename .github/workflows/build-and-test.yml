@@ -18,7 +18,7 @@ jobs:
         submodules: recursive
 
     - name: Install LLVM and Clang
-      run: apt-get update && apt-get install -y llvm-18 clang-18
+      run: sudo apt-get update && apt-get install -y llvm-18 clang-18
 
     - name: Checking LLVM and Clang
       run: clang-18 --version && opt-18 --version && which opt && which opt-18
