@@ -30,7 +30,7 @@ jobs:
       run: clang --version && opt --version 
 
     - name: Configure CMake with Clang
-      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-17/cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang
+      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-17/cmake
 
     - name: Build
       run: cmake --build build -t run_test
