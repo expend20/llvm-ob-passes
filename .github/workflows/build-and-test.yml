@@ -24,7 +24,10 @@ jobs:
       run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 18
 
     - name: Checking LLVM and Clang
-      run: clang-18 --version && opt-18 --version && which opt && which opt-18
+      run: clang-18 --version && opt-18 --version && which clang-18 && which opt-18
+
+    - name: Make a link
+      run: sudo ln -s /usr/bin/opt-18 /usr/bin/opt && sudo ln -s /usr/bin/clang-18 /usr/bin/clang
 
     - name: Configure CMake
       run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-18/cmake
