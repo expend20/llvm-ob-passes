@@ -38,8 +38,7 @@ std::string run_test(const char* pass_name) {
     output = exec("clang -c -S -emit-llvm -O1 ../tests/test.c -o test.ll");
     //std::cout << "Output: " << output << std::endl;
 
-    // run opt with BogusControlFlow pass: opt -load-pass-plugin=./libLLVMExamplePass.so -passes="bogus-control-flow" test.ll -o test_obfuscated.ll
-    std::string command = "opt-17 -load-pass-plugin \"./libLLVMExamplePass.so\" -passes \"";
+    std::string command = "opt -load-pass-plugin=./libpasses.so -passes \"";
     command += pass_name;
     command += "\" test.ll -S -o test_obfuscated.ll -debug-pass-manager";
     std::cout << "Executing command: " << command << std::endl;
@@ -71,8 +70,7 @@ int main(int argc, char **argv) {
     // print current working directory
     {
         std::cout << "Current working directory: " << getcwd(nullptr, 0) << std::endl;
-        // exec "touch ./libLLVMExamplePass.so"
-        const auto result = exec("file ./libLLVMExamplePass.so");
+        const auto result = exec("file ./libpasses.so");
         std::cout << "File result: " << result << std::endl;
     }
 

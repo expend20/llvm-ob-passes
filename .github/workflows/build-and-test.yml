@@ -33,3 +33,9 @@ jobs:
 
     - name: Run Tests
       run: cmake --build build -t run_test
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results
+        path: build

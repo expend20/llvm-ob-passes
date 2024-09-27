@@ -14,7 +14,7 @@ link_directories(${LLVM_LIBRARY_DIRS})
 
 include_directories(include)
 
-add_library(LLVMExamplePass MODULE
+add_library(passes MODULE
   lib/ExamplePass.cpp
   lib/BogusControlFlowPass.cpp
   lib/PassRegistration.cpp
@@ -42,7 +42,7 @@ add_test(NAME tests COMMAND tests)
 # Custom command to run the test
 add_custom_target(run_test
   COMMAND ${CMAKE_CURRENT_BINARY_DIR}/tests
-  DEPENDS tests
+  DEPENDS tests passes
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
   COMMENT "Running tests"
 )
