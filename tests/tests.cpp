@@ -39,7 +39,7 @@ std::string run_test(const char* pass_name) {
     //std::cout << "Output: " << output << std::endl;
 
     // run opt with BogusControlFlow pass: opt -load-pass-plugin=./libLLVMExamplePass.so -passes="bogus-control-flow" test.ll -o test_obfuscated.ll
-    std::string command = "opt -load-pass-plugin=./libLLVMExamplePass.so -passes=\"";
+    std::string command = "opt -load-pass-plugin \"./libLLVMExamplePass.so\" -passes \"";
     command += pass_name;
     command += "\" test.ll -S -o test_obfuscated.ll -debug-pass-manager";
     std::cout << "Executing command: " << command << std::endl;
