@@ -18,18 +18,16 @@ jobs:
         submodules: recursive
 
     - name: Install LLVM and Clang
-      uses: KyleMayes/install-llvm-action@v2
-      with:
-        version: "18"
+      run: apt-get update && apt-get install -y llvm-18 clang-18
+
+    - name: Checking LLVM and Clang
+      run: clang-18 --version && opt-18 --version && which opt && which opt-18
 
     - name: Configure CMake
-      run: cmake -B build
+      run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-18/cmake
 
     - name: Build
-      run: cmake --build build
-
-    - name: Debug
-      run: opt --version && ls build && pwd
+      run: cmake --build build -t run_test
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
@@ -37,6 +35,4 @@ jobs:
         name: test-results
         path: build
 
-    - name: Run Tests
-      run: cmake --build build -t run_test
 
