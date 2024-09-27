@@ -21,9 +21,9 @@ jobs:
       run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 17
 
     - name: Replace default clang
-      run: \
-        sudo mv /usr/bin/clang /usr/bin/clang-old && \
-        sudo ln -s /usr/bin/clang-17 /usr/bin/clang \
+      run: |
+        sudo mv /usr/bin/clang /usr/bin/clang-old
+        sudo ln -s /usr/bin/clang-17 /usr/bin/clang
         sudo ln -s /usr/bin/opt-17 /usr/bin/opt
 
     - name: Check LLVM and Clang
