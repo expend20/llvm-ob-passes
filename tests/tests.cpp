@@ -69,6 +69,13 @@ int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
     original_output = run_test("");
     // print current working directory
+    {
+        std::cout << "Current working directory: " << getcwd(nullptr, 0) << std::endl;
+        // exec "touch ./libLLVMExamplePass.so"
+        const auto result = exec("touch ./libLLVMExamplePass.so");
+        std::cout << "Touch result: " << result << std::endl;
+    }
+
     std::cout << "Current working directory: " << getcwd(nullptr, 0) << std::endl;
     return RUN_ALL_TESTS();
 }
