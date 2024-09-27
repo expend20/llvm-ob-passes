@@ -23,8 +23,8 @@ jobs:
     - name: Install LLVM and Clang
       run: wget https://apt.llvm.org/llvm.sh && chmod +x llvm.sh && sudo ./llvm.sh 18
 
-    - name: Checking LLVM and Clang
-      run: clang --version && opt --version && which clang-17 && which opt-17
+    - name: Replace default clang
+      run: sudo mv /usr/bin/clang /usr/bin/clang-old && sudo ln -s /usr/bin/clang-17 /usr/bin/clang
 
     - name: Make a link
       run: sudo ln -s /usr/bin/opt-17 /usr/bin/opt
