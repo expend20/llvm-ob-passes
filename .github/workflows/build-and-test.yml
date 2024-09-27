@@ -20,7 +20,7 @@ jobs:
     - name: Install LLVM and Clang
       uses: KyleMayes/install-llvm-action@v2
       with:
-        version: "19"
+        version: "18"
 
     - name: Configure CMake
       run: cmake -B build
@@ -31,11 +31,12 @@ jobs:
     - name: Debug
       run: opt --version && ls build && pwd
 
-    - name: Run Tests
-      run: cmake --build build -t run_test
-
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
         name: test-results
         path: build
+
+    - name: Run Tests
+      run: cmake --build build -t run_test
+
