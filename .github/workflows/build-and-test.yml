@@ -40,4 +40,45 @@ jobs:
     - name: Build
       run: cmake --build build -t run_test
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: libpasses-${{ matrix.llvm-version }}
+        path: libpasses-${{ matrix.llvm-version }}.so
 
+  release:
+    needs: llvm
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v3
+
+    - name: Create release archive
+      run: |
+        mkdir release
+        cp libpasses-*/*.so release/
+        cd release
+        tar -czvf libpasses.tar.gz *.so
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.sha }}
+        release_name: Release ${{ github.sha }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./release/libpasses.tar.gz
+        asset_name: libpasses.tar.gz
+        asset_content_type: application/gzip
