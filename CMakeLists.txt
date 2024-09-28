@@ -16,7 +16,7 @@ include_directories(include)
 
 add_library(passes MODULE
   lib/ExamplePass.cpp
-  lib/BogusControlFlowPass.cpp
+  lib/Pluto/BogusControlFlowPass.cpp
   lib/PassRegistration.cpp
 )
 

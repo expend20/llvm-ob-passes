@@ -1,10 +1,9 @@
 // Credits: https://github.com/bluesadi/Pluto/
-#include "BogusControlFlowPass.h"
+#include "Pluto/BogusControlFlowPass.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/Transforms/Utils/Cloning.h"
 #include "llvm/Transforms/Utils/ValueMapper.h"
 #include <vector>
-#include "llvm/Passes/PassBuilder.h"
 
 using namespace llvm;
 
@@ -59,7 +58,7 @@ Value *createBogusCmp(BasicBlock *insertAfter) {
 
 } // anonymous namespace
 
-PreservedAnalyses BogusControlFlowPass::run(Function &F, FunctionAnalysisManager &AM) {
+PreservedAnalyses Pluto::BogusControlFlowPass::run(Function &F, FunctionAnalysisManager &AM) {
     std::vector<BasicBlock *> origBB;
     for (BasicBlock &BB : F) {
         origBB.push_back(&BB);
@@ -96,27 +95,4 @@ PreservedAnalyses BogusControlFlowPass::run(Function &F, FunctionAnalysisManager
         BranchInst::Create(bodyBB, cloneBB);
     }
     return PreservedAnalyses::none();
-}
-
-// At the end of the file
-PassPluginLibraryInfo getBogusControlFlowPassPluginInfo() {
-    return {
-        LLVM_PLUGIN_API_VERSION, "BogusControlFlowPass", LLVM_VERSION_STRING,
-        [](PassBuilder &PB) {
-            PB.registerPipelineParsingCallback(
-                [](StringRef Name, FunctionPassManager &FPM,
-                   ArrayRef<PassBuilder::PipelineElement>) {
-                    if (Name == "bogus-control-flow") {
-                        FPM.addPass(BogusControlFlowPass());
-                        return true;
-                    }
-                    return false;
-                });
-        }
-    };
-}
-
-extern "C" LLVM_ATTRIBUTE_WEAK ::llvm::PassPluginLibraryInfo
-llvmGetPassPluginInfo() {
-    return getBogusControlFlowPassPluginInfo();
 }

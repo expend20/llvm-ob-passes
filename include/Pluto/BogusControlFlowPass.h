@@ -2,9 +2,10 @@
 #define LLVM_TRANSFORMS_BOGUSCONTROLFLOW_BOGUSCONTROLFLOWPASS_H
 
 #include "llvm/IR/PassManager.h"
-#include "llvm/Passes/PassPlugin.h"
 
-namespace llvm {
+using namespace llvm;
+
+namespace Pluto {
 
 class BogusControlFlowPass : public PassInfoMixin<BogusControlFlowPass> {
 public:
@@ -12,9 +13,6 @@ public:
   static bool isRequired() { return false; }
 };
 
-} // namespace llvm
-
-// Declare the pass plugin info function
-extern "C" LLVM_ATTRIBUTE_WEAK ::llvm::PassPluginLibraryInfo llvmGetPassPluginInfo();
+} // namespace Pluto
 
 #endif // LLVM_TRANSFORMS_BOGUSCONTROLFLOW_BOGUSCONTROLFLOWPASS_H

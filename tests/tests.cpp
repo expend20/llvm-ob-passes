@@ -59,7 +59,7 @@ std::string original_output;
 
 TEST(BogusControlFlowTest, OutputMatches) {
 
-    std::string obfuscated_output = run_test("bogus-control-flow");
+    std::string obfuscated_output = run_test("pluto-bogus-control-flow");
     EXPECT_EQ(original_output, obfuscated_output);
 
 }
