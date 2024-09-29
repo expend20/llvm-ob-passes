@@ -55,7 +55,7 @@ jobs:
   release:
     needs: llvm
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     steps:
     - name: Download all artifacts
