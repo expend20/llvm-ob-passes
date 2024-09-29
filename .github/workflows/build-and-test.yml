@@ -61,10 +61,14 @@ jobs:
     steps:
     - name: Download all artifacts
       uses: actions/download-artifact@v4
+      with:
+        path: artifacts
 
     - name: Create release archive
       run: |
-        zip -r libpasses.zip libpasses-*.so
+        cd artifacts
+        zip -r ../libpasses.zip */libpasses-*.so
+        cd ..
 
     - name: Create Release and Upload Asset
       uses: softprops/action-gh-release@v2
