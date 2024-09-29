@@ -38,13 +38,16 @@ jobs:
       run: cmake -B build -DLLVM_DIR=/usr/lib/llvm-${{ matrix.llvm-version }}/cmake -DCMAKE_C_COMPILER=clang-${{ matrix.llvm-version }} -DCMAKE_CXX_COMPILER=clang++-${{ matrix.llvm-version }}
 
     - name: Build
-      run: cmake --build build -t run_test
+      run: |
+        cmake --build build -t run_test
+        mkdir -p artifacts
+        cp build/libpasses-${{ matrix.llvm-version }}.so artifacts/
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: libpasses-${{ matrix.llvm-version }}
-        path: libpasses-${{ matrix.llvm-version }}.so
+        path: artifacts/libpasses-${{ matrix.llvm-version }}.so
 
   release:
     needs: llvm
@@ -53,18 +56,16 @@ jobs:
 
     steps:
     - name: Download all artifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
 
     - name: Create release archive
       run: |
-        mkdir release
-        cp libpasses-*/*.so release/
-        cd release
+        cd artifacts
         tar -czvf libpasses.tar.gz *.so
 
     - name: Create Release
       id: create_release
-      uses: actions/create-release@v1
+      uses: actions/create-release@v4
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
@@ -74,11 +75,11 @@ jobs:
         prerelease: false
 
     - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
+      uses: actions/upload-release-asset@v4
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./release/libpasses.tar.gz
+        asset_path: ./artifacts/libpasses.tar.gz
         asset_name: libpasses.tar.gz
         asset_content_type: application/gzip
