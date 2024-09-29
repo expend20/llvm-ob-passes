@@ -52,6 +52,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4
       with:
+        name: libpasses-${{ matrix.llvm-version }}
         path: artifacts
         retention-days: 1
 
@@ -68,8 +69,10 @@ jobs:
 
     - name: Create release archive
       run: |
-        cd artifacts
-        zip -r ../libpasses.zip */libpasses-*.so
+        mkdir release_files
+        find artifacts -name "libpasses-*.so" -exec cp {} release_files/ \;
+        cd release_files
+        zip -r ../libpasses.zip *
         cd ..
 
     - name: Generate release tag
