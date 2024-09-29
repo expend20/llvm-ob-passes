@@ -40,8 +40,11 @@ jobs:
     - name: Build
       run: |
         cmake --build build -t run_test
+
+    - name: Copy artifact
+      run: |
         mkdir -p artifacts
-        cp build/libpasses-${{ matrix.llvm-version }}.so artifacts/
+        cp build/libpasses.so artifacts/libpasses-${{ matrix.llvm-version }}.so
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
