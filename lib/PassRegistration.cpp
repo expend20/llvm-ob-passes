@@ -1,4 +1,6 @@
 #include "Pluto/BogusControlFlowPass.h"
+#include "Pluto/Flattening.h"
+
 #include "ExamplePass.h"
 #include "llvm/Passes/PassBuilder.h"
 #include "llvm/Passes/PassPlugin.h"
@@ -10,12 +12,16 @@ static void registerPasses(PassBuilder &PB) {
   PB.registerPipelineParsingCallback(
     [](StringRef Name, FunctionPassManager &FPM,
        ArrayRef<PassBuilder::PipelineElement>) {
+      if (Name == "example-pass") {
+        FPM.addPass(ExamplePass());
+        return true;
+      }
       if (Name == "pluto-bogus-control-flow") {
         FPM.addPass(Pluto::BogusControlFlowPass());
         return true;
       }
-      if (Name == "example-pass") {
-        FPM.addPass(ExamplePass());
+      if (Name == "pluto-flattening") {
+        FPM.addPass(Pluto::Flattening());
         return true;
       }
       return false;

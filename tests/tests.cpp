@@ -57,11 +57,26 @@ std::string run_test(const char* pass_name) {
 
 std::string original_output;
 
+TEST(ExamplePassTest, OutputMatches) {
+    std::string obfuscated_output = run_test("example-pass");
+    EXPECT_EQ(original_output, obfuscated_output);
+}
+
 TEST(BogusControlFlowTest, OutputMatches) {
 
     std::string obfuscated_output = run_test("pluto-bogus-control-flow");
     EXPECT_EQ(original_output, obfuscated_output);
 
+}
+
+TEST(FlatteningTest, OutputMatches) {
+    std::string obfuscated_output = run_test("pluto-flattening");
+    EXPECT_EQ(original_output, obfuscated_output);
+}
+
+TEST(CombinedTest, OutputMatches) {
+    std::string obfuscated_output = run_test("example-pass,pluto-bogus-control-flow,pluto-flattening");
+    EXPECT_EQ(original_output, obfuscated_output);
 }
 
 int main(int argc, char **argv) {
