@@ -308,7 +308,8 @@ CryptoUtils::CryptoUtils() : gen(0x1) { seeded = false; }
 unsigned CryptoUtils::scramble32(const unsigned in, const char key[16]) {
     assert(key != NULL && "CryptoUtils::scramble key=NULL");
 
-    DEBUG_WITH_TYPE("cryptoutils", dbgs() << "scramble32 in with " << in << "\n");
+    // fixme:
+    //DEBUG_WITH_TYPE("cryptoutils", dbgs() << "scramble32 in with " << in << "\n");
 
     unsigned tmpA, tmpB;
 
@@ -344,7 +345,9 @@ unsigned CryptoUtils::scramble32(const unsigned in, const char key[16]) {
 
     LOAD32H(tmpA, key);
 
-    DEBUG_WITH_TYPE("cryptoutils", dbgs() << "scramble32 out with " << static_cast<unsigned>(tmpA ^ tmpB) << "\n");
+
+
+    //DEBUG_WITH_TYPE("cryptoutils", dbgs() << "scramble32 out with " << static_cast<unsigned>(tmpA ^ tmpB) << "\n");
     return tmpA ^ tmpB;
 }
 
