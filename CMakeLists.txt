@@ -19,6 +19,7 @@ add_library(passes MODULE
   lib/Pluto/BogusControlFlowPass.cpp
   lib/Pluto/CryptoUtils.cpp
   lib/Pluto/Flattening.cpp
+  lib/Pluto/GlobalEncryption.cpp
   lib/PassRegistration.cpp
 )
 

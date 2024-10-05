@@ -4,7 +4,7 @@
 
 #include "llvm/ADT/Twine.h"
 #include "llvm/IR/LLVMContext.h"
-#include "llvm/Support/Debug.h"
+//#include "llvm/Support/Debug.h" // fixme: needed for DEBUG_WITH_TYPE
 
 #include <cassert>
 #include <cstdio>

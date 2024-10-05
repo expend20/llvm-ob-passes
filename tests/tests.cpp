@@ -6,13 +6,16 @@
 #include <iostream>
 #include <memory>
 #include <array>
+#include <vector>
 
-std::string exec(const char* cmd) {
+std::string exec(std::string cmd) {
+    std::cout << "Executing command: " << cmd << std::endl;
+
     std::array<char, 128> buffer;
     std::string result;
     int exit_status;
 
-    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd, "r"), pclose);
+    std::unique_ptr<FILE, decltype(&pclose)> pipe(popen(cmd.c_str(), "r"), pclose);
     if (!pipe) {
         throw std::runtime_error("popen() failed!");
     }
@@ -32,56 +35,76 @@ std::string exec(const char* cmd) {
     return result;
 }
 
-std::string run_test(const char* pass_name) {
-    // get the input .ll first: clang -c -emit-llvm test.c -o test.ll
+std::string run_passes(const std::vector<std::string>& pass_names) {
+    std::string input_ll = "test.ll";
     std::string output;
-    output = exec("clang -c -S -emit-llvm -O1 ../tests/test.c -o test.ll");
-    //std::cout << "Output: " << output << std::endl;
 
-    std::string command = "opt -load-pass-plugin=./libpasses.so -passes \"";
-    command += pass_name;
-    command += "\" test.ll -S -o test_obfuscated.ll -debug-pass-manager";
-    std::cout << "Executing command: " << command << std::endl;
-    output = exec(command.c_str());
-    //std::cout << "Command output: " << output << std::endl;
+    // Generate initial .ll file
+    output = exec("clang -c -S -emit-llvm -O1 ../tests/test.c -o " + input_ll);
 
-    // compile the obfuscated .ll to the binary
-    output = exec("clang test_obfuscated.ll -o test_obfuscated");
-    //std::cout << "Output: " << output << std::endl;
+    std::string passes_names = "";
+    for (size_t i = 0; i < pass_names.size(); ++i) {
+        const std::string& pass_name = pass_names[i];
+        if (passes_names != "") {
+            passes_names += ",";
+        }
+        passes_names += pass_name;
+        std::string output_ll = passes_names + ".ll";
 
-    // run the obfuscated binary
-    output = exec("./test_obfuscated");
-    //std::cout << "Output: " << output << std::endl;
-    return output;
+        std::string command = "opt -load-pass-plugin=./libpasses.so -passes \"";
+        command += pass_name;
+        command += "\" " + input_ll + " -S -o " + output_ll + " -debug-pass-manager";
+        output = exec(command.c_str());
+
+        // Set the output as input for the next pass
+        input_ll = output_ll;
+    }
+
+    // Compile the final obfuscated .ll to binary
+    std::string binary_name = passes_names.size() ? passes_names : "test_obfuscated";
+    output = exec("clang " + input_ll + " -o " + binary_name);
+
+    // Run the obfuscated binary
+    return exec("./" + binary_name);
 }
 
 std::string original_output;
 
 TEST(ExamplePassTest, OutputMatches) {
-    std::string obfuscated_output = run_test("example-pass");
+    std::string obfuscated_output = run_passes({"example-pass"});
     EXPECT_EQ(original_output, obfuscated_output);
 }
 
 TEST(BogusControlFlowTest, OutputMatches) {
-
-    std::string obfuscated_output = run_test("pluto-bogus-control-flow");
+    std::string obfuscated_output = run_passes({"pluto-bogus-control-flow"});
     EXPECT_EQ(original_output, obfuscated_output);
-
 }
 
 TEST(FlatteningTest, OutputMatches) {
-    std::string obfuscated_output = run_test("pluto-flattening");
+    std::string obfuscated_output = run_passes({"pluto-flattening"});
     EXPECT_EQ(original_output, obfuscated_output);
 }
 
+TEST(GlobalEncryptionTest, OutputMatches) {
+    std::string obfuscated_output = run_passes({"pluto-global-encryption"});
+    EXPECT_EQ(original_output, obfuscated_output);
+}
+
+// Add a new test case for combined passes
 TEST(CombinedTest, OutputMatches) {
-    std::string obfuscated_output = run_test("example-pass,pluto-bogus-control-flow,pluto-flattening");
+    std::string obfuscated_output = run_passes({
+        "example-pass",
+        "pluto-bogus-control-flow",
+        "pluto-flattening",
+        "pluto-global-encryption"
+    });
     EXPECT_EQ(original_output, obfuscated_output);
 }
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
-    original_output = run_test("");
+    original_output = run_passes({});
+    
     // print current working directory
     {
         std::cout << "Current working directory: " << getcwd(nullptr, 0) << std::endl;

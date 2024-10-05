@@ -1,6 +1,6 @@
 #include "Pluto/BogusControlFlowPass.h"
 #include "Pluto/Flattening.h"
-
+#include "Pluto/GlobalEncryption.h"
 #include "ExamplePass.h"
 #include "llvm/Passes/PassBuilder.h"
 #include "llvm/Passes/PassPlugin.h"
@@ -9,6 +9,18 @@ using namespace llvm;
 
 // Combined registration function
 static void registerPasses(PassBuilder &PB) {
+  // Register the module pass (GlobalEncryption)
+  PB.registerPipelineParsingCallback(
+    [](StringRef Name, ModulePassManager &MPM,
+       ArrayRef<PassBuilder::PipelineElement>) {
+      if (Name == "pluto-global-encryption") {
+        MPM.addPass(Pluto::GlobalEncryption());
+        return true;
+      }
+      return false;
+    });
+
+  // Register the function passes
   PB.registerPipelineParsingCallback(
     [](StringRef Name, FunctionPassManager &FPM,
        ArrayRef<PassBuilder::PipelineElement>) {
