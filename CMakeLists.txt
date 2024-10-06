@@ -20,6 +20,7 @@ add_library(passes MODULE
   lib/Pluto/CryptoUtils.cpp
   lib/Pluto/Flattening.cpp
   lib/Pluto/GlobalEncryption.cpp
+  lib/Pluto/IndirectCall.cpp
   lib/PassRegistration.cpp
 )
 

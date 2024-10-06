@@ -7,11 +7,7 @@ using namespace llvm;
 
 namespace Pluto {
 
-struct GlobalEncryption : PassInfoMixin<GlobalEncryption> {
-    void insertArrayDecryption(Module &M, GlobalVariable *GV, uint64_t key, uint64_t eleNum);
-
-    void insertIntDecryption(Module &M, GlobalVariable *GV, uint64_t key);
-
+struct IndirectCall : PassInfoMixin<IndirectCall> {
     PreservedAnalyses run(Module &M, ModuleAnalysisManager &AM);
 
     static bool isRequired() { return true; }

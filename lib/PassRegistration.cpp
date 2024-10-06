@@ -1,11 +1,17 @@
 #include "Pluto/BogusControlFlowPass.h"
 #include "Pluto/Flattening.h"
 #include "Pluto/GlobalEncryption.h"
+#include "Pluto/IndirectCall.h"
 #include "ExamplePass.h"
 #include "llvm/Passes/PassBuilder.h"
 #include "llvm/Passes/PassPlugin.h"
+#include "llvm/Transforms/Utils/LowerSwitch.h"
 
 using namespace llvm;
+
+struct LowerSwitchWrapper : LowerSwitchPass {
+    static bool isRequired() { return true; }
+};
 
 // Combined registration function
 static void registerPasses(PassBuilder &PB) {
@@ -15,6 +21,10 @@ static void registerPasses(PassBuilder &PB) {
        ArrayRef<PassBuilder::PipelineElement>) {
       if (Name == "pluto-global-encryption") {
         MPM.addPass(Pluto::GlobalEncryption());
+        return true;
+      }
+      if (Name == "pluto-indirect-call") {
+        MPM.addPass(Pluto::IndirectCall());
         return true;
       }
       return false;
@@ -33,6 +43,7 @@ static void registerPasses(PassBuilder &PB) {
         return true;
       }
       if (Name == "pluto-flattening") {
+        FPM.addPass(LowerSwitchWrapper());
         FPM.addPass(Pluto::Flattening());
         return true;
       }
