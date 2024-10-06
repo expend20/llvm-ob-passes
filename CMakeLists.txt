@@ -12,6 +12,10 @@ add_definitions(${LLVM_DEFINITIONS})
 include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
 
+# Add Z3 library
+find_package(Z3 REQUIRED)
+include_directories(${Z3_INCLUDE_DIRS})
+
 include_directories(include)
 
 add_library(passes MODULE
@@ -25,6 +29,9 @@ add_library(passes MODULE
   lib/Pluto/MBAObfuscation.cpp
   lib/PassRegistration.cpp
 )
+
+# Link Z3 library to passes
+target_link_libraries(passes PRIVATE ${Z3_LIBRARIES})
 
 # Fetch GTest
 include(FetchContent)

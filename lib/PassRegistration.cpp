@@ -2,6 +2,7 @@
 #include "Pluto/Flattening.h"
 #include "Pluto/GlobalEncryption.h"
 #include "Pluto/IndirectCall.h"
+#include "Pluto/MBAObfuscation.h"
 #include "ExamplePass.h"
 #include "llvm/Passes/PassBuilder.h"
 #include "llvm/Passes/PassPlugin.h"
@@ -45,6 +46,10 @@ static void registerPasses(PassBuilder &PB) {
       if (Name == "pluto-flattening") {
         FPM.addPass(LowerSwitchWrapper());
         FPM.addPass(Pluto::Flattening());
+        return true;
+      }
+      if (Name == "pluto-mba-obfuscation") {
+        FPM.addPass(Pluto::MbaObfuscation());
         return true;
       }
       return false;

@@ -96,6 +96,11 @@ TEST(IndirectCallTest, OutputMatches) {
     EXPECT_EQ(original_output, obfuscated_output);
 }
 
+TEST(MBAObfuscationTest, OutputMatches) {
+    std::string obfuscated_output = run_passes({"pluto-mba-obfuscation"});
+    EXPECT_EQ(original_output, obfuscated_output);
+}
+
 // Add a new test case for combined passes
 TEST(CombinedTest, OutputMatches) {
     std::string obfuscated_output = run_passes({
@@ -103,7 +108,8 @@ TEST(CombinedTest, OutputMatches) {
         "pluto-bogus-control-flow",
         "pluto-flattening",
         "pluto-global-encryption",
-        "pluto-indirect-call"
+        "pluto-indirect-call",
+        "pluto-mba-obfuscation" 
     });
     EXPECT_EQ(original_output, obfuscated_output);
 }
