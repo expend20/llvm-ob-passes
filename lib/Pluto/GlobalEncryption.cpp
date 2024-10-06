@@ -12,7 +12,7 @@ namespace Pluto {
 
 bool shouldSkip(GlobalVariable &GV) {
     // Do not encrypt LLVM-generated GV like llvm.global_ctors
-    if (GV.getName().startswith("llvm.")) {
+    if (GV.getName().starts_with("llvm.")) {
         return true;
     }
     // Only encrypt GV with internal or private linkage
