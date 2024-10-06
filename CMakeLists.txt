@@ -20,6 +20,7 @@ include_directories(include)
 
 add_library(passes MODULE
   lib/ExamplePass.cpp
+
   lib/Pluto/BogusControlFlowPass.cpp
   lib/Pluto/CryptoUtils.cpp
   lib/Pluto/Flattening.cpp
@@ -27,6 +28,8 @@ add_library(passes MODULE
   lib/Pluto/IndirectCall.cpp
   lib/Pluto/MBAUtils.cpp
   lib/Pluto/MBAObfuscation.cpp
+  lib/Pluto/Substitution.cpp
+
   lib/PassRegistration.cpp
 )
 

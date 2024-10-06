@@ -101,6 +101,11 @@ TEST(MBAObfuscationTest, OutputMatches) {
     EXPECT_EQ(original_output, obfuscated_output);
 }
 
+TEST(SubstitutionTest, OutputMatches) {
+    std::string obfuscated_output = run_passes({"pluto-substitution"});
+    EXPECT_EQ(original_output, obfuscated_output);
+}
+
 // Add a new test case for combined passes
 TEST(CombinedTest, OutputMatches) {
     std::string obfuscated_output = run_passes({
@@ -109,7 +114,7 @@ TEST(CombinedTest, OutputMatches) {
         "pluto-flattening",
         "pluto-global-encryption",
         "pluto-indirect-call",
-        "pluto-mba-obfuscation" 
+        "pluto-mba-obfuscation"
     });
     EXPECT_EQ(original_output, obfuscated_output);
 }

@@ -1,9 +1,12 @@
+#include "ExamplePass.h"
+
 #include "Pluto/BogusControlFlowPass.h"
 #include "Pluto/Flattening.h"
 #include "Pluto/GlobalEncryption.h"
 #include "Pluto/IndirectCall.h"
 #include "Pluto/MBAObfuscation.h"
-#include "ExamplePass.h"
+#include "Pluto/Substitution.h"
+
 #include "llvm/Passes/PassBuilder.h"
 #include "llvm/Passes/PassPlugin.h"
 #include "llvm/Transforms/Utils/LowerSwitch.h"
@@ -50,6 +53,10 @@ static void registerPasses(PassBuilder &PB) {
       }
       if (Name == "pluto-mba-obfuscation") {
         FPM.addPass(Pluto::MbaObfuscation());
+        return true;
+      }
+      if (Name == "pluto-substitution") {
+        FPM.addPass(Pluto::Substitution());
         return true;
       }
       return false;
