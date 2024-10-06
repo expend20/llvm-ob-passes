@@ -68,7 +68,8 @@ PreservedAnalyses GlobalEncryption::run(Module &M, ModuleAnalysisManager &AM) {
             }
         } else if (ConstantInt *dataInt = dyn_cast<ConstantInt>(GV->getInitializer())) {
             uint64_t key = cryptoutils->get_uint64_t();
-            ConstantInt *enc = ConstantInt::get(dataInt->getType(), key ^ dataInt->getZExtValue());
+            Constant *encConstant = ConstantInt::get(dataInt->getType(), key ^ dataInt->getZExtValue());
+            ConstantInt *enc = cast<ConstantInt>(encConstant);
             GV->setInitializer(enc);
             GV->setConstant(false);
             insertIntDecryption(M, GV, key);
