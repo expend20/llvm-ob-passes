@@ -1,7 +1,5 @@
-# dummy test
+# Wrapper for a third-party LLVM passes
 
-```
-cd dummy-test
-clang -S -emit-llvm test.c -o test.ll
-opt -load-pass-plugin=../build/libLLVMExamplePass.so -passes="example-pass" test.ll -S -o test.opt.ll -debug-pass-manager
-```
+Currently using:
+
+- Pluto: https://github.com/bluesadi/Pluto
