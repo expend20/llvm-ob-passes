@@ -22,6 +22,7 @@ add_library(passes MODULE
   lib/Pluto/GlobalEncryption.cpp
   lib/Pluto/IndirectCall.cpp
   lib/Pluto/MBAUtils.cpp
+  lib/Pluto/MBAObfuscation.cpp
   lib/PassRegistration.cpp
 )
 
