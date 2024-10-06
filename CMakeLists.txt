@@ -21,6 +21,7 @@ add_library(passes MODULE
   lib/Pluto/Flattening.cpp
   lib/Pluto/GlobalEncryption.cpp
   lib/Pluto/IndirectCall.cpp
+  lib/Pluto/MBAUtils.cpp
   lib/PassRegistration.cpp
 )
 
