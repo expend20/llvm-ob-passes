@@ -25,12 +25,12 @@ PreservedAnalyses Pluto::IndirectCall::run(Module &M, ModuleAnalysisManager &AM)
 
     std::vector<Constant *> funcAddrs;
     for (Function *F : functions) {
-        funcAddrs.push_back(ConstantExpr::getBitCast(F, Type::getInt8PtrTy(context)));
+        funcAddrs.push_back(ConstantExpr::getBitCast(F, Type::getInt8Ty(context)->getPointerTo()));
     }
 
     // Save function addresses to global variable
     ArrayRef<Constant *> funcAddrsRef(funcAddrs);
-    ArrayType *functionTableType = ArrayType::get(Type::getInt8PtrTy(context), funcAddrs.size());
+    ArrayType *functionTableType = ArrayType::get(Type::getInt8Ty(context)->getPointerTo(), funcAddrs.size());
     Constant *funcAddrsArray = ConstantArray::get(functionTableType, funcAddrsRef);
     GlobalVariable *functionTable =
         new GlobalVariable(M, functionTableType, false, GlobalVariable::PrivateLinkage, funcAddrsArray);
