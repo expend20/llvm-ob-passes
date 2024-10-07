@@ -1,4 +1,4 @@
-# Wrapper for a third-party LLVM passes
+# Wrapper for third-party LLVM passes
 
 Currently using:
 
