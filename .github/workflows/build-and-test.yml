@@ -42,7 +42,8 @@ jobs:
 
     - name: Build
       run: |
-        cmake --build build -t run_test
+        cmake --build build # build all targets
+        cmake --build build -t run_test # run tests
 
     - name: Copy artifact
       run: |
