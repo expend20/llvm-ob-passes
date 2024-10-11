@@ -48,6 +48,7 @@ jobs:
       run: |
         mkdir -p artifacts
         cp build/libpasses.so artifacts/libpasses-${{ matrix.llvm-version }}.so
+        cp build/wrapper artifacts/wrapper
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4
@@ -71,6 +72,7 @@ jobs:
       run: |
         mkdir release_files
         find artifacts -name "libpasses-*.so" -exec cp {} release_files/ \;
+        cp artifacts/wrapper release_files/
         cd release_files
         zip -r ../libpasses.zip *
         cd ..

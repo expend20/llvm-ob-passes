@@ -36,6 +36,9 @@ add_library(passes MODULE
 # Link Z3 library to passes
 target_link_libraries(passes PRIVATE ${Z3_LIBRARIES})
 
+add_executable(wrapper wrapper/wrapper.cpp)
+target_link_libraries(wrapper PRIVATE seccomp)
+
 # Fetch GTest
 include(FetchContent)
 FetchContent_Declare(
