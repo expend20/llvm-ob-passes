@@ -78,7 +78,7 @@ jobs:
         mkdir release_files
         find artifacts -name "libpasses-*.so" -exec cp {} release_files/ \;
         # copy wrapper binary only once
-        cp artifacts/
+        cp artifacts/libpasses-18/wrapper release_files/
         cd release_files
         zip -r ../libpasses.zip *
         cd ..
